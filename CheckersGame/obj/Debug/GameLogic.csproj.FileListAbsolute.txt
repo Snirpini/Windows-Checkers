@@ -1,0 +1,6 @@
+C:\Users\snirp\source\repos\checkers\CheckersGame\obj\Debug\GameLogic.csprojAssemblyReference.cache
+C:\Users\snirp\source\repos\checkers\CheckersGame\obj\Debug\GameLogic.csproj.CoreCompileInputs.cache
+C:\Users\snirp\source\repos\checkers\CheckersGame\bin\Debug\GameLogic.dll
+C:\Users\snirp\source\repos\checkers\CheckersGame\bin\Debug\GameLogic.pdb
+C:\Users\snirp\source\repos\checkers\CheckersGame\obj\Debug\GameLogic.dll
+C:\Users\snirp\source\repos\checkers\CheckersGame\obj\Debug\GameLogic.pdb
