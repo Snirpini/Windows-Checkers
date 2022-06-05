@@ -15,8 +15,9 @@ namespace WindowsUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new GameSettings());
-            Application.Run(new GameBoard());
+
+            GameBoardForm gameBoardForm = new GameBoardForm();
+            gameBoardForm.ShowDialog();
         }
     }
 }

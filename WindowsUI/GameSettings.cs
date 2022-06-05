@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GameLogic;
 
 namespace WindowsUI
 {
     public partial class GameSettings : Form
     {
+        
         public GameSettings()
         {
             InitializeComponent();
@@ -28,11 +30,12 @@ namespace WindowsUI
 
         private void radioButtonBigSize_CheckedChanged(object sender, EventArgs e)
         {
-
+            m_BoardSize = Board.eBoardSize.Large;
         }
 
         private void doneButton_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             this.Close();
         }
 
@@ -43,12 +46,12 @@ namespace WindowsUI
 
         private void radioButtonSmallSize_CheckedChanged(object sender, EventArgs e)
         {
-
+            m_BoardSize = Board.eBoardSize.Small;
         }
 
         private void radioButtonMediumSize_CheckedChanged(object sender, EventArgs e)
         {
-
+            m_BoardSize = Board.eBoardSize.Medium;
         }
 
         private void playersLabel_Click(object sender, EventArgs e)
@@ -72,7 +75,42 @@ namespace WindowsUI
 
         private void player2NameTextBox_TextChanged(object sender, EventArgs e)
         {
+        }
 
+        private Board.eBoardSize m_BoardSize;
+
+        public Board.eBoardSize BoardSize
+        {
+            get
+            {
+                return m_BoardSize; 
+            }
+        }
+
+        public string Player1Name
+        {
+            get
+            {
+                return player1NameTextBox.Text;
+            }
+
+            set
+            {
+                player1NameTextBox.Text = value;
+            }
+        }
+
+        public string Player2Name
+        {
+            get
+            {
+                return player2NameTextBox.Text;
+            }
+
+            set
+            {
+                player2NameTextBox.Text = value;
+            }
         }
     }
 }
