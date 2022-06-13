@@ -8,6 +8,7 @@ namespace GameLogic
     public class Player
     {
         public const int k_MaxNameLength = 20;
+        public const string k_ComputerDefaultName = "Computer";
 
         public enum ePlayerNumber
         {
@@ -184,6 +185,18 @@ namespace GameLogic
             }
 
             return possibleJumpMoves;
+        }
+
+        internal List<Point> GetGamePiecesLocationList()
+        {
+            List<Point> gamePiecesLocationList = new List<Point>();
+
+            foreach(GamePiece gamePiece in m_GamePieces)
+            {
+                gamePiecesLocationList.Add(gamePiece.Location);
+            }
+
+            return gamePiecesLocationList;
         }
     }
 }

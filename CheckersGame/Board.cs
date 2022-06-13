@@ -91,7 +91,7 @@ namespace GameLogic
                 {
                     currLocation = new Point(row, col);
 
-                    if (isSquareIsBlack(currLocation))
+                    if (isSquareBlack(currLocation))
                     {
                         currGamePiece = new GamePiece(currLocation, pieceColor);
                         i_Player.AddGamePiece(currGamePiece);
@@ -105,9 +105,14 @@ namespace GameLogic
             }
         }
 
-        private bool isSquareIsBlack(Point i_Location)
+        public static bool IsSquareBlack(int i_Row, int i_Col)
         {
-            return (i_Location.X % 2 == 0 && i_Location.Y % 2 != 0) || (i_Location.X % 2 != 0 && i_Location.Y % 2 == 0);
+            return (i_Row % 2 == 0 && i_Col % 2 != 0) || (i_Row % 2 != 0 && i_Col % 2 == 0);
+        }
+
+        private bool isSquareBlack(Point i_Location)
+        {
+            return IsSquareBlack(i_Location.X, i_Location.Y);
         }
 
         internal bool CheckIsLocationInBound(Point i_Location)

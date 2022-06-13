@@ -10,53 +10,24 @@ using GameLogic;
 
 namespace WindowsUI
 {
-    public partial class GameSettings : Form
+    public partial class FormGameSettings : Form
     {
-        
-        public GameSettings()
+        public FormGameSettings()
         {
             InitializeComponent();
         }
 
-        private void GameSettings_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void boardSizeLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButtonBigSize_CheckedChanged(object sender, EventArgs e)
-        {
-            m_BoardSize = Board.eBoardSize.Large;
-        }
-
         private void doneButton_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
-        private void player1NameTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButtonSmallSize_CheckedChanged(object sender, EventArgs e)
-        {
-            m_BoardSize = Board.eBoardSize.Small;
-        }
-
-        private void radioButtonMediumSize_CheckedChanged(object sender, EventArgs e)
-        {
-            m_BoardSize = Board.eBoardSize.Medium;
-        }
-
-        private void playersLabel_Click(object sender, EventArgs e)
-        {
-
+            if (string.IsNullOrWhiteSpace(player1NameTextBox.Text) || string.IsNullOrWhiteSpace(player2NameTextBox.Text))
+            {
+                MessageBox.Show("Please enter valid names!");
+            }
+            else
+            {
+                DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
 
         private void player2CheckBox_CheckedChanged(object sender, EventArgs e)
@@ -64,7 +35,7 @@ namespace WindowsUI
             player2NameTextBox.Enabled = player2CheckBox.Checked;
             if(!player2NameTextBox.Enabled)
             {
-                player2NameTextBox.Text = "Computer";
+                player2NameTextBox.Text = Player.k_ComputerDefaultName;
             }
             else
             {
@@ -73,17 +44,26 @@ namespace WindowsUI
             }
         }
 
-        private void player2NameTextBox_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private Board.eBoardSize m_BoardSize;
-
         public Board.eBoardSize BoardSize
         {
             get
             {
-                return m_BoardSize; 
+                Board.eBoardSize boardSize;
+
+                if(radioButtonSmallSize.Checked)
+                {
+                    boardSize = Board.eBoardSize.Small;
+                }
+                else if(radioButtonMediumSize.Checked)
+                {
+                    boardSize = Board.eBoardSize.Medium;
+                }
+                else
+                {
+                    boardSize = Board.eBoardSize.Large;
+                }
+
+                return boardSize;
             }
         }
 
@@ -110,6 +90,14 @@ namespace WindowsUI
             set
             {
                 player2NameTextBox.Text = value;
+            }
+        }
+
+        public Player.eType Player2Type
+        {
+            get
+            {
+                return player2CheckBox.Checked ? Player.eType.Human : Player.eType.Computer;
             }
         }
     }

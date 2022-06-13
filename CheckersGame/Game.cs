@@ -14,6 +14,8 @@ namespace GameLogic
             Player2Win
         }
 
+        public EventHandler BoardWasSet;
+        public EventHandler CurrentPlayerChanged;
         private Board m_GameBoard;
         private Player[] m_Players = new Player[2];
         private int m_CurrentPlayerIndex;
@@ -44,14 +46,21 @@ namespace GameLogic
             }
 
             m_GameBoard.SetBoardAndGamePieces(m_Players);
+            onBoardWasSet();
 
             foreach(Player player in m_Players)
             {
                 player.UpdatePossibleRegularMoves(m_GameBoard);
             }
 
-            m_CurrentPlayerIndex = 0;
+            setPlayer1AsCurrentPlayer();
             m_LastMove = null;
+        }
+
+        private void setPlayer1AsCurrentPlayer()
+        {
+            m_CurrentPlayerIndex = 0;
+            onCurrentPlayerChanged();
         }
 
         private Player getCurrentPlayer()
@@ -138,6 +147,7 @@ namespace GameLogic
         private void swapCurrentPlayer()
         {
             m_CurrentPlayerIndex = (m_CurrentPlayerIndex + 1) % 2;
+            onCurrentPlayerChanged();
         }
 
         public void MakeComputerMove()
@@ -399,6 +409,28 @@ namespace GameLogic
         private Player getLastMovePlayer()
         {
             return getLastMovedGamePiece().Color == GamePiece.eColor.Black ? m_Players[0] : m_Players[1];
+        }
+
+        private void onBoardWasSet()
+        {
+            EventArgs e = new EventArgs();
+
+            if (BoardWasSet != null)
+            {
+                BoardWasSet(this, e);
+            }
+        }
+
+        private void onCurrentPlayerChanged()
+        {
+            List<Point> currentPlayerGamePiecesLocationList = getCurrentPlayer().GetGamePiecesLocationList();
+            List<Point> nextPlayerGamePiecesLocationList = getNextPlayer().GetGamePiecesLocationList();
+            CurrentPlayerChangedEventArgs cpc = new CurrentPlayerChangedEventArgs(currentPlayerGamePiecesLocationList, nextPlayerGamePiecesLocationList);
+
+            if(CurrentPlayerChanged != null)
+            {
+                CurrentPlayerChanged(this, cpc);
+            }
         }
     }
 }
