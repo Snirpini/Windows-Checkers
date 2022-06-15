@@ -21,15 +21,15 @@ namespace GameLogic
             r_GameBoard = new GamePiece[(int)i_BoardSize, (int)i_BoardSize];
         }
 
-        internal GamePiece this[int i_Y, int i_X]
+        internal GamePiece this[int i_Row, int i_Col]
         {
             get
             {
-                return r_GameBoard[i_Y, i_X];
+                return r_GameBoard[i_Row, i_Col];
             }
             set
             {
-                r_GameBoard[i_Y, i_X] = value;
+                r_GameBoard[i_Row, i_Col] = value;
             }
         }
 
@@ -37,11 +37,11 @@ namespace GameLogic
         {
             get
             {
-                return this[i_position.Y, i_position.X];
+                return this[i_position.X, i_position.Y];
             }
             set
             {
-                this[i_position.Y, i_position.X] = value;
+                this[i_position.X, i_position.Y] = value;
             }
         }
 
@@ -91,7 +91,7 @@ namespace GameLogic
                 {
                     currLocation = new Point(row, col);
 
-                    if (isSquareIsBlack(currLocation))
+                    if (isSquareBlack(currLocation))
                     {
                         currGamePiece = new GamePiece(currLocation, pieceColor);
                         i_Player.AddGamePiece(currGamePiece);
@@ -105,9 +105,14 @@ namespace GameLogic
             }
         }
 
-        private bool isSquareIsBlack(Point i_Location)
+        public static bool IsSquareBlack(int i_Row, int i_Col)
         {
-            return (i_Location.X % 2 == 0 && i_Location.Y % 2 != 0) || (i_Location.X % 2 != 0 && i_Location.Y % 2 == 0);
+            return (i_Row % 2 == 0 && i_Col % 2 != 0) || (i_Row % 2 != 0 && i_Col % 2 == 0);
+        }
+
+        private bool isSquareBlack(Point i_Location)
+        {
+            return IsSquareBlack(i_Location.X, i_Location.Y);
         }
 
         internal bool CheckIsLocationInBound(Point i_Location)

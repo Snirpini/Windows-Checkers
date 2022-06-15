@@ -164,28 +164,28 @@ namespace GameLogic
         {
             int offset = this.Color == GamePiece.eColor.Black ? 1 : -1;
             
-            return new Point(this.Location.Y - offset, this.Location.X + 1);
+            return new Point(this.Location.X - offset, this.Location.Y + 1);
         }
 
         internal Point NeighborForwardLeftLocation()
         {
             int offset = this.Color == GamePiece.eColor.Black ? 1 : -1;
 
-            return new Point(this.Location.Y - offset, this.Location.X - 1);
+            return new Point(this.Location.X - offset, this.Location.Y - 1);
         }
 
         internal Point NeighborBackwardRightLocation()
         {
             int offset = this.Color == GamePiece.eColor.Black ? 1 : -1;
 
-            return new Point(this.Location.Y + offset, this.Location.X + 1);
+            return new Point(this.Location.X + offset, this.Location.Y + 1);
         }
 
         internal Point NeighborBackwardLeftLocation()
         {
             int offset = this.Color == GamePiece.eColor.Black ? 1 : -1;
 
-            return new Point(this.Location.Y + offset, this.Location.X - 1);
+            return new Point(this.Location.X + offset, this.Location.Y - 1);
         }
 
         internal bool CheckIsHaveAPossibleMove()
