@@ -34,40 +34,71 @@ namespace WindowsUI
             labelPlayer2Name = new Label();
             labelPlayer1Score = new Label();
             labelPlayer2Score = new Label();
+            timerToComputerMove = new Timer();
             this.SuspendLayout();
+            this.timerToComputerMove.Interval = k_ComputerMoveDelay;
+            this.timerToComputerMove.Tick += new System.EventHandler(timerToComputerMove_Tick);
             // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            //this.ClientSize = new System.Drawing.Size(284, 261);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "FormGame";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Checkers";
             this.Load += new System.EventHandler(this.FormGame_Load);
+            this.FormClosing += FormGame_FormClosing;
             this.ResumeLayout(false);
         }
 
         private void InitializeFormBySetting()
         {
-            int player1LabelWidth = (r_FormGameSettings.Player1Name.Length * 12) + 5;
-            int player2LabelWidth = (r_FormGameSettings.Player2Name.Length * 12) + 5;
-            int player1LabelX = 10;
-            int player2LabelX;
-
             initButtonsMatrix();
-            this.ClientSize = getFormSize();
-            this.Text = "Checkers";
-            labelPlayer1Name.Text = r_FormGameSettings.Player1Name + ":";
-            labelPlayer1Name.Location = new System.Drawing.Point(player1LabelX, 30);
-            labelPlayer1Name.Size = new Size(player1LabelWidth, 20);
-            labelPlayer1Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            labelPlayer2Name.Text = r_FormGameSettings.Player2Name + ":";
-            player2LabelX = labelPlayer1Name.Right + 50;
-            labelPlayer2Name.Location = new System.Drawing.Point(player2LabelX, 30);
-            labelPlayer2Name.Size = new Size(player2LabelWidth, 20);
-            labelPlayer2Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ClientSize = getFormSizeFromFormGameSettings();
+            this.CenterToScreen();
+            initLabelPlayerName(labelPlayer1Name);
+            initLabelPlayerName(labelPlayer2Name);
+            labelPlayer1Score.Location = new System.Drawing.Point(labelPlayer1Name.Right, 20);
+            labelPlayer1Score.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            labelPlayer1Score.AutoSize = true;
+            this.Controls.Add(labelPlayer1Score);
+            labelPlayer2Score.Location = new System.Drawing.Point(labelPlayer2Name.Right, 20);
+            labelPlayer2Score.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            labelPlayer2Score.AutoSize = true;
+            this.Controls.Add(labelPlayer2Score);
+        }
 
-            this.Controls.AddRange(new Control[] { labelPlayer1Name, labelPlayer2Name });
+        private void initLabelPlayerName(Label i_LabelPlayerName)
+        {
+            int halfOfBoardWidth = (int)r_FormGameSettings.BoardSize / 2 * k_BoardButtonSize;
+            int maxLabelLength = (halfOfBoardWidth - k_BoardButtonSize) / 10;
+            StringBuilder labelTextSB = new StringBuilder();
+            int labelLocationX;
+
+            if(i_LabelPlayerName == labelPlayer1Name)
+            {
+                labelTextSB.Append(r_FormGameSettings.Player1Name);
+                labelLocationX = k_FrameDistance;
+            }
+            else
+            {
+                labelTextSB.Append(r_FormGameSettings.Player2Name);
+                labelLocationX = k_FrameDistance + halfOfBoardWidth;
+            }
+
+            if(labelTextSB.Length > maxLabelLength)
+            {
+                labelTextSB.Length = maxLabelLength;
+            }
+
+            labelTextSB.Append(" :");
+            i_LabelPlayerName.Text = labelTextSB.ToString();
+            i_LabelPlayerName.Location = new System.Drawing.Point(labelLocationX, 20);
+            i_LabelPlayerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            i_LabelPlayerName.AutoSize = true;
+
+            this.Controls.Add(i_LabelPlayerName);
         }
 
         private void initButtonsMatrix()
@@ -86,11 +117,9 @@ namespace WindowsUI
                 {
                     buttonsMatrix[row, col] = new Button();
                     buttonsMatrix[row, col].Location = location;
-                    buttonsMatrix[row, col].Size = new Size(k_BoardButtonSize, k_BoardButtonSize);
+                    initButton(row, col);
                     this.Controls.Add(buttonsMatrix[row, col]);
                     this.buttonsMatrix[row, col].Click += m_BoardButton_Click;
-                    setBottonColorAndActivity(row, col);
-                    //setSign(row, col); // Not here - move to setBoardAndGamePieces
                     location.X += k_BoardButtonSize;
                 }
 
@@ -98,20 +127,31 @@ namespace WindowsUI
             }
         }
 
-        private void setSign(int i_Row, int i_Col)
+        private void initButton(int i_Row, int i_Col)
         {
-            string sign;
-            GameLogic.Point location = new GameLogic.Point(i_Row, i_Col);
-            if(r_Game.GetGamePieceColor(location) == GamePiece.eColor.Black)
+            Button button = buttonsMatrix[i_Row, i_Col];
+            button.TabStop = false;
+            button.Size = new Size(k_BoardButtonSize, k_BoardButtonSize);
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+
+            if (Board.IsSquareBlack(i_Row, i_Col))
             {
-                sign = r_Game.CheckIsGamePieceKing(location) ? "K" : "X";
-                buttonsMatrix[i_Row, i_Col].Text = sign;
+                button.BackColor = Color.White;
             }
-            else if(r_Game.GetGamePieceColor(location) == GamePiece.eColor.White)
+            else
             {
-                sign = r_Game.CheckIsGamePieceKing(location) ? "U" : "O";
-                buttonsMatrix[i_Row, i_Col].Text = sign;
+                button.BackColor = Color.Gray;
+                button.Enabled = false;
             }
+        }
+
+        private System.Drawing.Size getFormSizeFromFormGameSettings()
+        {
+            int height = ((int)r_FormGameSettings.BoardSize * k_BoardButtonSize) + k_TopDistance + k_FrameDistance;
+            int width = ((int)r_FormGameSettings.BoardSize * k_BoardButtonSize) + (k_FrameDistance * 2);
+
+            return new System.Drawing.Size(width, height);
         }
 
         private Button[,] buttonsMatrix;
@@ -119,5 +159,6 @@ namespace WindowsUI
         private Label labelPlayer2Name;
         private Label labelPlayer1Score;
         private Label labelPlayer2Score;
+        private Timer timerToComputerMove;
     }
 }

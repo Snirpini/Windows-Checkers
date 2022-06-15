@@ -19,15 +19,20 @@ namespace WindowsUI
 
         private void doneButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(player1NameTextBox.Text) || string.IsNullOrWhiteSpace(player2NameTextBox.Text))
+            if (!isValidPlayerName(player1NameTextBox.Text) || !isValidPlayerName(player2NameTextBox.Text))
             {
-                MessageBox.Show("Please enter valid names!");
+                MessageBox.Show("Please enter valid names without whitespaces!");
             }
             else
             {
                 DialogResult = DialogResult.OK;
                 this.Close();
             }
+        }
+
+        private bool isValidPlayerName(string i_PlayerName)
+        {
+            return !string.IsNullOrWhiteSpace(i_PlayerName) && !i_PlayerName.Contains(' ');
         }
 
         private void player2CheckBox_CheckedChanged(object sender, EventArgs e)
@@ -41,6 +46,36 @@ namespace WindowsUI
             {
                 player2NameTextBox.Clear();
                 player2NameTextBox.Focus();
+            }
+        }
+
+        private void playerNameTextBox_Enter(object sender, EventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            if (textBox.ForeColor == Color.DarkGray)
+            {
+                textBox.Clear();
+                textBox.ForeColor = Color.Black;
+            }
+        }
+
+        private void playerNameTextBox_Leave(object sender, EventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            if (string.IsNullOrEmpty(textBox.Text))
+            {
+                textBox.ForeColor = Color.DarkGray;
+
+                if (textBox == player1NameTextBox)
+                {
+                    textBox.Text = GameLogic.Player.k_Player1DefaultName;
+                }
+                else if (!player2CheckBox.Focused)
+                {
+                    textBox.Text = GameLogic.Player.k_Player2DefaultName;
+                }
             }
         }
 
@@ -73,11 +108,6 @@ namespace WindowsUI
             {
                 return player1NameTextBox.Text;
             }
-
-            set
-            {
-                player1NameTextBox.Text = value;
-            }
         }
 
         public string Player2Name
@@ -85,11 +115,6 @@ namespace WindowsUI
             get
             {
                 return player2NameTextBox.Text;
-            }
-
-            set
-            {
-                player2NameTextBox.Text = value;
             }
         }
 

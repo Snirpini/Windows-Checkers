@@ -14,8 +14,8 @@ namespace GameLogic
             Player2Win
         }
 
-        public EventHandler BoardWasSet;
-        public EventHandler CurrentPlayerChanged;
+        public EventHandler newRoundWasSet;
+        public EventHandler MoveMade;
         private Board m_GameBoard;
         private Player[] m_Players = new Player[2];
         private int m_CurrentPlayerIndex;
@@ -46,7 +46,6 @@ namespace GameLogic
             }
 
             m_GameBoard.SetBoardAndGamePieces(m_Players);
-            onBoardWasSet();
 
             foreach(Player player in m_Players)
             {
@@ -55,12 +54,12 @@ namespace GameLogic
 
             setPlayer1AsCurrentPlayer();
             m_LastMove = null;
+            onNewRoundWasSet();
         }
 
         private void setPlayer1AsCurrentPlayer()
         {
             m_CurrentPlayerIndex = 0;
-            onCurrentPlayerChanged();
         }
 
         private Player getCurrentPlayer()
@@ -147,7 +146,6 @@ namespace GameLogic
         private void swapCurrentPlayer()
         {
             m_CurrentPlayerIndex = (m_CurrentPlayerIndex + 1) % 2;
-            onCurrentPlayerChanged();
         }
 
         public void MakeComputerMove()
@@ -250,6 +248,7 @@ namespace GameLogic
         private void makeMove(Move i_Move)
         {
             GamePiece currGamePiece = m_GameBoard[i_Move.Source];
+            Point? capturedGamePieceLocation = null;
 
             currGamePiece.Location = i_Move.Destination;
             m_GameBoard[i_Move.Destination] = currGamePiece;
@@ -259,7 +258,7 @@ namespace GameLogic
 
             if (i_Move.CheckIsJumpMove())
             {
-                makeCapture(i_Move);
+                capturedGamePieceLocation = makeCapture(i_Move);
             }
 
             updatePlayersPossibleMoves();
@@ -269,37 +268,42 @@ namespace GameLogic
             {
                 swapCurrentPlayer();
             }
+
+            MoveMadeEventArgs mm = new MoveMadeEventArgs(i_Move, capturedGamePieceLocation);
+            onMoveMade(mm);
         }
 
-        private void makeCapture(Move i_Move)
+        private Point makeCapture(Move i_Move)
         {
-            GamePiece capturedGamePiece;
+            Point capturedGamePieceLocation;
 
-            if (i_Move.Source.X < i_Move.Destination.X)
+            if (i_Move.Source.Y < i_Move.Destination.Y)
             {
-                if (i_Move.Source.Y < i_Move.Destination.Y)
+                if (i_Move.Source.X < i_Move.Destination.X)
                 {
-                    capturedGamePiece = m_GameBoard[i_Move.Source.Y + 1, i_Move.Source.X + 1];
+                    capturedGamePieceLocation = new Point(i_Move.Source.X + 1, i_Move.Source.Y + 1);
                 }
                 else
                 {
-                    capturedGamePiece = m_GameBoard[i_Move.Source.Y - 1, i_Move.Source.X + 1];
+                    capturedGamePieceLocation = new Point(i_Move.Source.X - 1, i_Move.Source.Y + 1);
                 }
             }
             else
             {
-                if (i_Move.Source.Y < i_Move.Destination.Y)
+                if (i_Move.Source.X < i_Move.Destination.X)
                 {
-                    capturedGamePiece = m_GameBoard[i_Move.Source.Y + 1, i_Move.Source.X - 1];
+                    capturedGamePieceLocation = new Point(i_Move.Source.X + 1, i_Move.Source.Y - 1);
                 }
                 else
                 {
-                    capturedGamePiece = m_GameBoard[i_Move.Source.Y - 1, i_Move.Source.X - 1];
+                    capturedGamePieceLocation = new Point(i_Move.Source.X - 1, i_Move.Source.Y - 1);
                 }
             }
 
-            m_GameBoard[capturedGamePiece.Location] = null;
-            getNextPlayer().RemoveGamePiece(capturedGamePiece);
+            getNextPlayer().RemoveGamePiece(m_GameBoard[capturedGamePieceLocation]);
+            m_GameBoard[capturedGamePieceLocation] = null;
+
+            return capturedGamePieceLocation;
         }
 
         public bool CheckIsRoundOver()
@@ -394,7 +398,7 @@ namespace GameLogic
         {
             if (i_GamePiece.Type.Equals(GamePiece.eType.Man))
             {
-                if(i_GamePiece.Location.Y.Equals(i_GamePiece.Color.Equals(GamePiece.eColor.Black) ? 0 : m_GameBoard.Size - 1))
+                if(i_GamePiece.Location.X.Equals(i_GamePiece.Color.Equals(GamePiece.eColor.Black) ? 0 : m_GameBoard.Size - 1))
                 {
                     i_GamePiece.Type = GamePiece.eType.King;
                 }
@@ -411,25 +415,41 @@ namespace GameLogic
             return getLastMovedGamePiece().Color == GamePiece.eColor.Black ? m_Players[0] : m_Players[1];
         }
 
-        private void onBoardWasSet()
+        public int GetPlayerScore(Player.ePlayerNumber i_PlayerNumber)
+        {
+            return i_PlayerNumber == Player.ePlayerNumber.Player1 ? m_Players[0].Score : m_Players[1].Score;
+        }
+
+        public string GetPlayerName(Player.ePlayerNumber i_PlayerNumber)
+        {
+            return i_PlayerNumber == Player.ePlayerNumber.Player1 ? m_Players[0].Name : m_Players[1].Name;
+        }
+
+        public bool CheckIsOwnedByCurrentPlayer(Point i_Location)
+        {
+            return getCurrentPlayer().CheckIsOwner(m_GameBoard[i_Location]);
+        }
+
+        public bool CheckIsEmpty(Point i_Location)
+        {
+            return m_GameBoard[i_Location] == null;
+        }
+
+        private void onNewRoundWasSet()
         {
             EventArgs e = new EventArgs();
 
-            if (BoardWasSet != null)
+            if (newRoundWasSet != null)
             {
-                BoardWasSet(this, e);
+                newRoundWasSet(this, e);
             }
         }
 
-        private void onCurrentPlayerChanged()
+        private void onMoveMade(MoveMadeEventArgs mm)
         {
-            List<Point> currentPlayerGamePiecesLocationList = getCurrentPlayer().GetGamePiecesLocationList();
-            List<Point> nextPlayerGamePiecesLocationList = getNextPlayer().GetGamePiecesLocationList();
-            CurrentPlayerChangedEventArgs cpc = new CurrentPlayerChangedEventArgs(currentPlayerGamePiecesLocationList, nextPlayerGamePiecesLocationList);
-
-            if(CurrentPlayerChanged != null)
+            if(MoveMade != null)
             {
-                CurrentPlayerChanged(this, cpc);
+                MoveMade(this, mm);
             }
         }
     }

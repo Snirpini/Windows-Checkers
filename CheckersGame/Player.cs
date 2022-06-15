@@ -9,6 +9,8 @@ namespace GameLogic
     {
         public const int k_MaxNameLength = 20;
         public const string k_ComputerDefaultName = "Computer";
+        public const string k_Player1DefaultName = "Player1";
+        public const string k_Player2DefaultName = "Player2";
 
         public enum ePlayerNumber
         {
@@ -125,7 +127,7 @@ namespace GameLogic
 
         internal bool CheckIsOwner(GamePiece i_GamePiece)
         {
-            return this.r_PlayerNumber.Equals(i_GamePiece.Color == GamePiece.eColor.Black ? Player.ePlayerNumber.Player1 : Player.ePlayerNumber.Player2);
+            return i_GamePiece != null && this.r_PlayerNumber.Equals(i_GamePiece.Color == GamePiece.eColor.Black ? Player.ePlayerNumber.Player1 : Player.ePlayerNumber.Player2);
         }
 
         internal bool CheckIsHaveAPossibleJumpMove()

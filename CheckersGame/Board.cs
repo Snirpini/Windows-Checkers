@@ -21,15 +21,15 @@ namespace GameLogic
             r_GameBoard = new GamePiece[(int)i_BoardSize, (int)i_BoardSize];
         }
 
-        internal GamePiece this[int i_Y, int i_X]
+        internal GamePiece this[int i_Row, int i_Col]
         {
             get
             {
-                return r_GameBoard[i_Y, i_X];
+                return r_GameBoard[i_Row, i_Col];
             }
             set
             {
-                r_GameBoard[i_Y, i_X] = value;
+                r_GameBoard[i_Row, i_Col] = value;
             }
         }
 
@@ -37,11 +37,11 @@ namespace GameLogic
         {
             get
             {
-                return this[i_position.Y, i_position.X];
+                return this[i_position.X, i_position.Y];
             }
             set
             {
-                this[i_position.Y, i_position.X] = value;
+                this[i_position.X, i_position.Y] = value;
             }
         }
 

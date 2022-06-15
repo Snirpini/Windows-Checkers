@@ -56,6 +56,7 @@
             this.radioButtonSmallSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButtonSmallSize.Location = new System.Drawing.Point(32, 59);
             this.radioButtonSmallSize.Name = "radioButtonSmallSize";
+            this.radioButtonSmallSize.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.radioButtonSmallSize.Size = new System.Drawing.Size(64, 24);
             this.radioButtonSmallSize.TabIndex = 1;
             this.radioButtonSmallSize.TabStop = true;
@@ -87,22 +88,29 @@
             // player1NameTextBox
             // 
             this.player1NameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player1NameTextBox.ForeColor = System.Drawing.Color.DarkGray;
             this.player1NameTextBox.Location = new System.Drawing.Point(154, 143);
             this.player1NameTextBox.MaxLength = 20;
             this.player1NameTextBox.Name = "player1NameTextBox";
             this.player1NameTextBox.Size = new System.Drawing.Size(130, 26);
             this.player1NameTextBox.TabIndex = 2;
+            this.player1NameTextBox.Text = "Player1";
+            this.player1NameTextBox.Enter += new System.EventHandler(this.playerNameTextBox_Enter);
+            this.player1NameTextBox.Leave += new System.EventHandler(this.playerNameTextBox_Leave);
             // 
             // player2NameTextBox
             // 
             this.player2NameTextBox.Enabled = false;
             this.player2NameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player2NameTextBox.ForeColor = System.Drawing.Color.DarkGray;
             this.player2NameTextBox.Location = new System.Drawing.Point(154, 183);
             this.player2NameTextBox.MaxLength = 20;
             this.player2NameTextBox.Name = "player2NameTextBox";
             this.player2NameTextBox.Size = new System.Drawing.Size(130, 26);
             this.player2NameTextBox.TabIndex = 2;
             this.player2NameTextBox.Text = "Computer";
+            this.player2NameTextBox.Enter += new System.EventHandler(this.playerNameTextBox_Enter);
+            this.player2NameTextBox.Leave += new System.EventHandler(this.playerNameTextBox_Leave);
             // 
             // player2CheckBox
             // 
@@ -135,7 +143,7 @@
             this.playersLabel.Location = new System.Drawing.Point(16, 105);
             this.playersLabel.Name = "playersLabel";
             this.playersLabel.Size = new System.Drawing.Size(72, 20);
-            this.playersLabel.TabIndex = 5;
+            this.playersLabel.TabIndex = 0;
             this.playersLabel.Text = "Players:";
             // 
             // player1Label
@@ -145,13 +153,15 @@
             this.player1Label.Location = new System.Drawing.Point(45, 143);
             this.player1Label.Name = "player1Label";
             this.player1Label.Size = new System.Drawing.Size(69, 20);
-            this.player1Label.TabIndex = 6;
+            this.player1Label.TabIndex = 0;
             this.player1Label.Text = "Player 1:";
             // 
             // FormGameSettings
             // 
+            this.AcceptButton = this.doneButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(317, 266);
             this.Controls.Add(this.player1Label);
             this.Controls.Add(this.playersLabel);
@@ -163,6 +173,8 @@
             this.Controls.Add(this.radioButtonMediumSize);
             this.Controls.Add(this.radioButtonSmallSize);
             this.Controls.Add(this.boardSizeLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "FormGameSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Settings";

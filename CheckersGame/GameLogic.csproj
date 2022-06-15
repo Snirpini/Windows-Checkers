@@ -41,9 +41,12 @@
     <Compile Include="Move.cs" />
     <Compile Include="GamePiece.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="MoveMadeEventArgs.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Point.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
