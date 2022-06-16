@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="CurrentPlayerChangedEventArgs.cs" />
+    <Compile Include="InvalidMoveEnteredEventArgs.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="GamePiece.cs" />
     <Compile Include="Game.cs" />

@@ -25,6 +25,7 @@ namespace WindowsUI
         {
             r_Game.newRoundWasSet += r_Game_newRoundWasSet;
             r_Game.MoveMade += r_Game_MoveMade;
+            r_Game.InvalidMoveEntered += r_Game_InvalidMoveEntered;
             InitializeComponent();
         }
 
@@ -96,11 +97,7 @@ namespace WindowsUI
             else if(m_ButtonSource != null && r_Game.CheckIsEmpty(currLocationOnBoard))
             {
                 GameLogic.Move userMove = new GameLogic.Move(getLocationOnLogicBoard(m_ButtonSource.Location), currLocationOnBoard);
-                if (!r_Game.MakeUserMove(userMove))
-                {
-                    unsetButtonSource();
-                    MessageBox.Show("Invalid move!");
-                }
+                r_Game.MakeUserMove(userMove);
             }
         }
 
@@ -155,23 +152,39 @@ namespace WindowsUI
             }
         }
 
+        private void r_Game_InvalidMoveEntered(object sender, EventArgs e)
+        {
+            InvalidMoveEnteredEventArgs ime = e as InvalidMoveEnteredEventArgs;
+            StringBuilder errorMessageSB = new StringBuilder("Invalid Move!");
+
+            switch (ime.InvalidReason)
+            {
+                case InvalidMoveEnteredEventArgs.eInvalidReason.HasMandatoryMove:
+                    errorMessageSB.AppendLine().Append("You have a mandatory move!");
+                    break;
+                case InvalidMoveEnteredEventArgs.eInvalidReason.MultipleCapture:
+                    errorMessageSB.AppendLine().Append("You have another cupture!");
+                    break;
+            }
+
+            unsetButtonSource();
+            MessageBox.Show(errorMessageSB.ToString(), this.Text);
+        }
+
         private void updateScores()
         {
             labelPlayer1Score.Text = r_Game.GetPlayerScore(GameLogic.Player.ePlayerNumber.Player1).ToString();
             labelPlayer2Score.Text = r_Game.GetPlayerScore(GameLogic.Player.ePlayerNumber.Player2).ToString();
-
-            //updatePlayerScore(GameLogic.Player.ePlayerNumber.Player1);
-            //updatePlayerScore(GameLogic.Player.ePlayerNumber.Player2);
         }
 
-        private void updatePlayerScore(GameLogic.Player.ePlayerNumber i_playerNumber)
-        {
-            string playerName = r_Game.GetPlayerName(i_playerNumber);
-            int playerScore = r_Game.GetPlayerScore(i_playerNumber);
-            Label labelPlayerScore = i_playerNumber == GameLogic.Player.ePlayerNumber.Player1 ? labelPlayer1Name : labelPlayer2Name;
+        //private void updatePlayerScore(GameLogic.Player.ePlayerNumber i_playerNumber)
+        //{
+        //    string playerName = r_Game.GetPlayerName(i_playerNumber);
+        //    int playerScore = r_Game.GetPlayerScore(i_playerNumber);
+        //    Label labelPlayerScore = i_playerNumber == GameLogic.Player.ePlayerNumber.Player1 ? labelPlayer1Name : labelPlayer2Name;
 
-            labelPlayerScore.Text = $"{playerName} : {playerScore}";
-        }
+        //    labelPlayerScore.Text = $"{playerName} : {playerScore}";
+        //}
 
         private void highlightCurrentPlayerNameLabel()
         {

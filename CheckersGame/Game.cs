@@ -16,6 +16,7 @@ namespace GameLogic
 
         public EventHandler newRoundWasSet;
         public EventHandler MoveMade;
+        public EventHandler InvalidMoveEntered;
         private Board m_GameBoard;
         private Player[] m_Players = new Player[2];
         private int m_CurrentPlayerIndex;
@@ -196,6 +197,7 @@ namespace GameLogic
         {
             bool isValidMove = true;
             GamePiece currGamePiece;
+            InvalidMoveEnteredEventArgs.eInvalidReason? invalidReason = null;
 
             if (m_GameBoard.CheckIsLocationInBound(i_Move.Source) && m_GameBoard.CheckIsLocationInBound(i_Move.Destination))
             {
@@ -213,33 +215,45 @@ namespace GameLogic
                                 {
                                     if (getCurrentPlayer().CheckIsOwner(getLastMovedGamePiece()) && !currGamePiece.Equals(getLastMovedGamePiece()))
                                     {
+                                        invalidReason = InvalidMoveEnteredEventArgs.eInvalidReason.MultipleCapture;
                                         isValidMove = false;
                                     }
                                 }
                                 else
                                 {
+                                    invalidReason = InvalidMoveEnteredEventArgs.eInvalidReason.HasMandatoryMove;
                                     isValidMove = false;
                                 }
                             }
                         }
                         else
                         {
+                            invalidReason = InvalidMoveEnteredEventArgs.eInvalidReason.InvalidCheckersMove;
                             isValidMove = false;
                         }
                     }
                     else
                     {
+                        invalidReason = InvalidMoveEnteredEventArgs.eInvalidReason.SourceIsOpponent;
                         isValidMove = false;
                     }
                 }
                 else
                 {
+                    invalidReason = InvalidMoveEnteredEventArgs.eInvalidReason.SourceIsEmpty;
                     isValidMove = false;
                 }
             }
             else
             {
+                invalidReason = InvalidMoveEnteredEventArgs.eInvalidReason.OutOfBoard;
                 isValidMove = false;
+            }
+
+            if(!isValidMove && CurrentPlayerType() == Player.eType.Human)
+            {
+                InvalidMoveEnteredEventArgs ime = new InvalidMoveEnteredEventArgs(invalidReason.Value);
+                onInvalidMoveEntered(ime);
             }
 
             return isValidMove;
@@ -450,6 +464,14 @@ namespace GameLogic
             if(MoveMade != null)
             {
                 MoveMade(this, mm);
+            }
+        }
+
+        private void onInvalidMoveEntered(InvalidMoveEnteredEventArgs ime)
+        {
+            if(InvalidMoveEntered != null)
+            {
+                InvalidMoveEntered(this, ime);
             }
         }
     }
