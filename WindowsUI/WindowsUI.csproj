@@ -72,6 +72,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -88,6 +89,18 @@
       <Project>{16142321-e734-441e-8a8c-62628826ea13}</Project>
       <Name>GameLogic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GamePiece_Black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GamePiece_Black_King.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GamePiece_Red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GamePiece_Red_King.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

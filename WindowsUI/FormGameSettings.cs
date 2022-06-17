@@ -45,7 +45,7 @@ namespace WindowsUI
             else
             {
                 player2NameTextBox.Clear();
-                player2NameTextBox.Focus();
+                player2NameTextBox.Text = GameLogic.Player.k_Player2DefaultName;
             }
         }
 

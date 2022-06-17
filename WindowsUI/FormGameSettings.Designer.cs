@@ -42,7 +42,7 @@
             // 
             // boardSizeLabel
             // 
-            this.boardSizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.boardSizeLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.boardSizeLabel.Location = new System.Drawing.Point(12, 31);
             this.boardSizeLabel.Name = "boardSizeLabel";
             this.boardSizeLabel.Size = new System.Drawing.Size(107, 25);
@@ -53,46 +53,46 @@
             // 
             this.radioButtonSmallSize.AutoSize = true;
             this.radioButtonSmallSize.Checked = true;
-            this.radioButtonSmallSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonSmallSize.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButtonSmallSize.Location = new System.Drawing.Point(32, 59);
             this.radioButtonSmallSize.Name = "radioButtonSmallSize";
             this.radioButtonSmallSize.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radioButtonSmallSize.Size = new System.Drawing.Size(64, 24);
+            this.radioButtonSmallSize.Size = new System.Drawing.Size(61, 25);
             this.radioButtonSmallSize.TabIndex = 1;
             this.radioButtonSmallSize.TabStop = true;
-            this.radioButtonSmallSize.Text = "6 X 6";
+            this.radioButtonSmallSize.Text = "6 x 6";
             this.radioButtonSmallSize.UseVisualStyleBackColor = true;
             // 
             // radioButtonMediumSize
             // 
             this.radioButtonMediumSize.AutoSize = true;
-            this.radioButtonMediumSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonMediumSize.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButtonMediumSize.Location = new System.Drawing.Point(116, 59);
             this.radioButtonMediumSize.Name = "radioButtonMediumSize";
-            this.radioButtonMediumSize.Size = new System.Drawing.Size(64, 24);
+            this.radioButtonMediumSize.Size = new System.Drawing.Size(61, 25);
             this.radioButtonMediumSize.TabIndex = 1;
-            this.radioButtonMediumSize.Text = "8 X 8";
+            this.radioButtonMediumSize.Text = "8 x 8";
             this.radioButtonMediumSize.UseVisualStyleBackColor = true;
             // 
             // radioButtonLargeSize
             // 
             this.radioButtonLargeSize.AutoSize = true;
-            this.radioButtonLargeSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonLargeSize.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButtonLargeSize.Location = new System.Drawing.Point(200, 59);
             this.radioButtonLargeSize.Name = "radioButtonLargeSize";
-            this.radioButtonLargeSize.Size = new System.Drawing.Size(82, 24);
+            this.radioButtonLargeSize.Size = new System.Drawing.Size(79, 25);
             this.radioButtonLargeSize.TabIndex = 1;
-            this.radioButtonLargeSize.Text = "10 X 10";
+            this.radioButtonLargeSize.Text = "10 x 10";
             this.radioButtonLargeSize.UseVisualStyleBackColor = true;
             // 
             // player1NameTextBox
             // 
-            this.player1NameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player1NameTextBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.player1NameTextBox.ForeColor = System.Drawing.Color.DarkGray;
-            this.player1NameTextBox.Location = new System.Drawing.Point(154, 143);
+            this.player1NameTextBox.Location = new System.Drawing.Point(137, 143);
             this.player1NameTextBox.MaxLength = 20;
             this.player1NameTextBox.Name = "player1NameTextBox";
-            this.player1NameTextBox.Size = new System.Drawing.Size(130, 26);
+            this.player1NameTextBox.Size = new System.Drawing.Size(142, 29);
             this.player1NameTextBox.TabIndex = 2;
             this.player1NameTextBox.Text = "Player1";
             this.player1NameTextBox.Enter += new System.EventHandler(this.playerNameTextBox_Enter);
@@ -101,12 +101,12 @@
             // player2NameTextBox
             // 
             this.player2NameTextBox.Enabled = false;
-            this.player2NameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player2NameTextBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.player2NameTextBox.ForeColor = System.Drawing.Color.DarkGray;
-            this.player2NameTextBox.Location = new System.Drawing.Point(154, 183);
+            this.player2NameTextBox.Location = new System.Drawing.Point(137, 183);
             this.player2NameTextBox.MaxLength = 20;
             this.player2NameTextBox.Name = "player2NameTextBox";
-            this.player2NameTextBox.Size = new System.Drawing.Size(130, 26);
+            this.player2NameTextBox.Size = new System.Drawing.Size(142, 29);
             this.player2NameTextBox.TabIndex = 2;
             this.player2NameTextBox.Text = "Computer";
             this.player2NameTextBox.Enter += new System.EventHandler(this.playerNameTextBox_Enter);
@@ -115,10 +115,10 @@
             // player2CheckBox
             // 
             this.player2CheckBox.AutoSize = true;
-            this.player2CheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player2CheckBox.Location = new System.Drawing.Point(45, 183);
+            this.player2CheckBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player2CheckBox.Location = new System.Drawing.Point(20, 183);
             this.player2CheckBox.Name = "player2CheckBox";
-            this.player2CheckBox.Size = new System.Drawing.Size(88, 24);
+            this.player2CheckBox.Size = new System.Drawing.Size(88, 25);
             this.player2CheckBox.TabIndex = 3;
             this.player2CheckBox.Text = "Player 2:";
             this.player2CheckBox.UseVisualStyleBackColor = true;
@@ -127,7 +127,7 @@
             // doneButton
             // 
             this.doneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.doneButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.doneButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.doneButton.Location = new System.Drawing.Point(207, 225);
             this.doneButton.Name = "doneButton";
             this.doneButton.Size = new System.Drawing.Size(98, 29);
@@ -139,20 +139,20 @@
             // playersLabel
             // 
             this.playersLabel.AutoSize = true;
-            this.playersLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playersLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.playersLabel.Location = new System.Drawing.Point(16, 105);
             this.playersLabel.Name = "playersLabel";
-            this.playersLabel.Size = new System.Drawing.Size(72, 20);
+            this.playersLabel.Size = new System.Drawing.Size(69, 21);
             this.playersLabel.TabIndex = 0;
             this.playersLabel.Text = "Players:";
             // 
             // player1Label
             // 
             this.player1Label.AutoSize = true;
-            this.player1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.player1Label.Location = new System.Drawing.Point(45, 143);
+            this.player1Label.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player1Label.Location = new System.Drawing.Point(39, 143);
             this.player1Label.Name = "player1Label";
-            this.player1Label.Size = new System.Drawing.Size(69, 20);
+            this.player1Label.Size = new System.Drawing.Size(69, 21);
             this.player1Label.TabIndex = 0;
             this.player1Label.Text = "Player 1:";
             // 
@@ -173,6 +173,7 @@
             this.Controls.Add(this.radioButtonMediumSize);
             this.Controls.Add(this.radioButtonSmallSize);
             this.Controls.Add(this.boardSizeLabel);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FormGameSettings";

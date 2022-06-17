@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
-using GameLogic;
 
 namespace WindowsUI
 {
@@ -54,25 +53,25 @@ namespace WindowsUI
 
         private void InitializeFormBySetting()
         {
-            initButtonsMatrix();
+            initPictureBoxsMatrix();
             this.ClientSize = getFormSizeFromFormGameSettings();
             this.CenterToScreen();
             initLabelPlayerName(labelPlayer1Name);
             initLabelPlayerName(labelPlayer2Name);
-            labelPlayer1Score.Location = new System.Drawing.Point(labelPlayer1Name.Right, 20);
-            labelPlayer1Score.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            labelPlayer1Score.Location = new System.Drawing.Point(labelPlayer1Name.Right, k_PlayerLabelY);
+            labelPlayer1Score.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             labelPlayer1Score.AutoSize = true;
             this.Controls.Add(labelPlayer1Score);
-            labelPlayer2Score.Location = new System.Drawing.Point(labelPlayer2Name.Right, 20);
-            labelPlayer2Score.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            labelPlayer2Score.Location = new System.Drawing.Point(labelPlayer2Name.Right, k_PlayerLabelY);
+            labelPlayer2Score.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             labelPlayer2Score.AutoSize = true;
             this.Controls.Add(labelPlayer2Score);
         }
 
         private void initLabelPlayerName(Label i_LabelPlayerName)
         {
-            int halfOfBoardWidth = (int)r_FormGameSettings.BoardSize / 2 * k_BoardButtonSize;
-            int maxLabelLength = (halfOfBoardWidth - k_BoardButtonSize) / 10;
+            int halfOfBoardWidth = (int)r_FormGameSettings.BoardSize / 2 * k_BoardPictureBoxSize;
+            int maxLabelLength = (halfOfBoardWidth - k_BoardPictureBoxSize) / 10;
             StringBuilder labelTextSB = new StringBuilder();
             int labelLocationX;
 
@@ -94,67 +93,66 @@ namespace WindowsUI
 
             labelTextSB.Append(" :");
             i_LabelPlayerName.Text = labelTextSB.ToString();
-            i_LabelPlayerName.Location = new System.Drawing.Point(labelLocationX, 20);
-            i_LabelPlayerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            i_LabelPlayerName.Location = new System.Drawing.Point(labelLocationX, k_PlayerLabelY);
+            i_LabelPlayerName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             i_LabelPlayerName.AutoSize = true;
 
             this.Controls.Add(i_LabelPlayerName);
         }
 
-        private void initButtonsMatrix()
+        private void initPictureBoxsMatrix()
         {
             System.Drawing.Point location;
-            System.Drawing.Point firstButtonInLineLocation = new System.Drawing.Point(k_FrameDistance, k_TopDistance);
+            System.Drawing.Point firstPictureBoxInLineLocation = new System.Drawing.Point(k_FrameDistance, k_TopDistance);
             int boardSize = (int)r_FormGameSettings.BoardSize;
 
-            buttonsMatrix = new Button[boardSize, boardSize];
-            
+            pictureBoxsMatrix = new PictureBox[boardSize, boardSize];
+
             for (int row = 0; row < boardSize; row++)
             {
-                location = firstButtonInLineLocation;
+                location = firstPictureBoxInLineLocation;
 
                 for (int col = 0; col < boardSize; col++)
                 {
-                    buttonsMatrix[row, col] = new Button();
-                    buttonsMatrix[row, col].Location = location;
-                    initButton(row, col);
-                    this.Controls.Add(buttonsMatrix[row, col]);
-                    this.buttonsMatrix[row, col].Click += m_BoardButton_Click;
-                    location.X += k_BoardButtonSize;
+                    pictureBoxsMatrix[row, col] = new PictureBox();
+                    pictureBoxsMatrix[row, col].Location = location;
+                    initPictureBox(row, col);
+                    this.Controls.Add(pictureBoxsMatrix[row, col]);
+                    this.pictureBoxsMatrix[row, col].Click += pictureBox_Click;
+                    location.X += k_BoardPictureBoxSize;
                 }
 
-                firstButtonInLineLocation.Y += k_BoardButtonSize;
+                firstPictureBoxInLineLocation.Y += k_BoardPictureBoxSize;
             }
         }
 
-        private void initButton(int i_Row, int i_Col)
+        private void initPictureBox(int i_Row, int i_Col)
         {
-            Button button = buttonsMatrix[i_Row, i_Col];
-            button.TabStop = false;
-            button.Size = new Size(k_BoardButtonSize, k_BoardButtonSize);
-            button.FlatStyle = FlatStyle.Flat;
-            button.FlatAppearance.BorderSize = 0;
+            PictureBox pictureBox = pictureBoxsMatrix[i_Row, i_Col];
+            pictureBox.TabStop = false;
+            pictureBox.Size = new Size(k_BoardPictureBoxSize, k_BoardPictureBoxSize);
+            pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 
-            if (Board.IsSquareBlack(i_Row, i_Col))
+            if (GameLogic.Board.IsSquareBlack(i_Row, i_Col))
             {
-                button.BackColor = Color.White;
+                pictureBox.BackColor = Color.White;
             }
             else
             {
-                button.BackColor = Color.Gray;
-                button.Enabled = false;
+                pictureBox.BackColor = Color.Black;
+                pictureBox.Enabled = false;
             }
         }
 
         private System.Drawing.Size getFormSizeFromFormGameSettings()
         {
-            int height = ((int)r_FormGameSettings.BoardSize * k_BoardButtonSize) + k_TopDistance + k_FrameDistance;
-            int width = ((int)r_FormGameSettings.BoardSize * k_BoardButtonSize) + (k_FrameDistance * 2);
+            int height = ((int)r_FormGameSettings.BoardSize * k_BoardPictureBoxSize) + k_TopDistance + k_FrameDistance;
+            int width = ((int)r_FormGameSettings.BoardSize * k_BoardPictureBoxSize) + (k_FrameDistance * 2);
 
             return new System.Drawing.Size(width, height);
         }
 
-        private Button[,] buttonsMatrix;
+        private PictureBox[,] pictureBoxsMatrix;
         private Label labelPlayer1Name;
         private Label labelPlayer2Name;
         private Label labelPlayer1Score;
