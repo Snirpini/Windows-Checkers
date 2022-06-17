@@ -7,20 +7,20 @@ namespace GameLogic
 {
     public class MoveMadeEventArgs : EventArgs
     {
-        Move m_Move;
-        Point? m_CapturedGamePieceLocation;
+        private readonly Move r_Move;
+        private readonly Point? r_CapturedGamePieceLocation;
 
         internal MoveMadeEventArgs(Move i_Move, Point? i_CapturedGamePieceLocation)
         {
-            m_Move = i_Move;
-            m_CapturedGamePieceLocation = i_CapturedGamePieceLocation;
+            r_Move = i_Move;
+            r_CapturedGamePieceLocation = i_CapturedGamePieceLocation;
         }
 
         public Move Move
         {
             get
             {
-                return m_Move;
+                return r_Move;
             }
         }
 
@@ -28,7 +28,7 @@ namespace GameLogic
         {
             get
             {
-                return m_CapturedGamePieceLocation;
+                return r_CapturedGamePieceLocation;
             }
         }
     }

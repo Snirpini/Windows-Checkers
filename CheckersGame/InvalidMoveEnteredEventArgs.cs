@@ -17,7 +17,7 @@ namespace GameLogic
             MultipleCapture
         }
 
-        private eInvalidReason r_InvalidReason;
+        private readonly eInvalidReason r_InvalidReason;
 
         public InvalidMoveEnteredEventArgs(eInvalidReason i_InvalidReason)
         {
@@ -31,12 +31,5 @@ namespace GameLogic
                 return r_InvalidReason;
             }
         }
-        //private string r_ErrorMessage;
-
-        //public InvalidMoveEnteredEventArgs(string i_ErrorMessage)
-        //{
-        //    r_ErrorMessage = i_ErrorMessage;
-        //}
-
     }
 }

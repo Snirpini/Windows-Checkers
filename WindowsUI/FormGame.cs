@@ -6,24 +6,24 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using GameLogic;
 
 namespace WindowsUI
 {
     public partial class FormGame : Form
     {
-        private const int k_BoardButtonSize = 60;
+        private const int k_BoardPictureBoxSize = 50;
         private const int k_TopDistance = 60;
         private const int k_FrameDistance = 10;
+        private const int k_PlayerLabelY = 20;
         private const int k_ComputerMoveDelay = 2000;
 
-        private readonly Game r_Game = new Game();
+        private readonly GameLogic.Game r_Game = new GameLogic.Game();
         private readonly FormGameSettings r_FormGameSettings = new FormGameSettings();
-        private Button m_ButtonSource;
+        private PictureBox m_PictureBoxSource;
         
         public FormGame()
         {
-            r_Game.newRoundWasSet += r_Game_newRoundWasSet;
+            r_Game.NewRoundWasSet += r_Game_newRoundWasSet;
             r_Game.MoveMade += r_Game_MoveMade;
             r_Game.InvalidMoveEntered += r_Game_InvalidMoveEntered;
             InitializeComponent();
@@ -72,72 +72,72 @@ namespace WindowsUI
                 {
                     if (GameLogic.Board.IsSquareBlack(row, col))
                     {
-                        updateButtonFromLogicBoard(buttonsMatrix[row, col]);
+                        updatePictureBoxFromLogicBoard(pictureBoxsMatrix[row, col]);
                     }
                 }
             }
         }
 
-        private void m_BoardButton_Click(object sender, EventArgs e)
+        private void pictureBox_Click(object sender, EventArgs e)
         {
-            Button buttonCurr = sender as Button;
-            GameLogic.Point currLocationOnBoard = getLocationOnLogicBoard(buttonCurr.Location);
+            PictureBox pictureBoxCurr = sender as PictureBox;
+            GameLogic.Point currLocationOnBoard = getLocationOnLogicBoard(pictureBoxCurr.Location);
 
             if (r_Game.CheckIsOwnedByCurrentPlayer(currLocationOnBoard))
             {
-                if (m_ButtonSource == buttonCurr)
+                if (m_PictureBoxSource == pictureBoxCurr)
                 {
-                    unsetButtonSource();
+                    unsetPictureBoxSource();
                 }
                 else
                 {
-                    setButtonSource(buttonCurr);
+                    setPictureBoxSource(pictureBoxCurr);
                 }
             }
-            else if(m_ButtonSource != null && r_Game.CheckIsEmpty(currLocationOnBoard))
+            else if (m_PictureBoxSource != null && r_Game.CheckIsEmpty(currLocationOnBoard))
             {
-                GameLogic.Move userMove = new GameLogic.Move(getLocationOnLogicBoard(m_ButtonSource.Location), currLocationOnBoard);
+                GameLogic.Move userMove = new GameLogic.Move(getLocationOnLogicBoard(m_PictureBoxSource.Location), currLocationOnBoard);
+                unsetPictureBoxSource();
                 r_Game.MakeUserMove(userMove);
             }
         }
 
-        private void setButtonSource(Button i_Button)
+        private void setPictureBoxSource(PictureBox i_PictureBox)
         {
-            if(m_ButtonSource != null)
+            if (m_PictureBoxSource != null)
             {
-                unsetButtonSource();
+                unsetPictureBoxSource();
             }
 
-            m_ButtonSource = i_Button;
-            i_Button.BackColor = Color.PowderBlue;
+            m_PictureBoxSource = i_PictureBox;
+            i_PictureBox.BackColor = Color.DodgerBlue;
         }
 
-        private void unsetButtonSource()
+        private void unsetPictureBoxSource()
         {
-            if(m_ButtonSource != null)
+            if (m_PictureBoxSource != null)
             {
-                m_ButtonSource.BackColor = Color.White;
-                m_ButtonSource = null;
+                m_PictureBoxSource.BackColor = Color.White;
+                m_PictureBoxSource = null;
             }
         }
 
         private void r_Game_MoveMade(object sender, EventArgs e)
         {
-            MoveMadeEventArgs mm = e as MoveMadeEventArgs;
-            Button buttonSrc = buttonsMatrix[mm.Move.Source.X, mm.Move.Source.Y];
-            Button buttonDest = buttonsMatrix[mm.Move.Destination.X, mm.Move.Destination.Y];
+            GameLogic.MoveMadeEventArgs mm = e as GameLogic.MoveMadeEventArgs;
+            PictureBox pictureBoxSrc = pictureBoxsMatrix[mm.Move.Source.X, mm.Move.Source.Y];
+            PictureBox pictureBoxDest = pictureBoxsMatrix[mm.Move.Destination.X, mm.Move.Destination.Y];
 
-            unsetButtonSource();
-            updateButtonFromLogicBoard(buttonSrc);
-            updateButtonFromLogicBoard(buttonDest);
+            updatePictureBoxFromLogicBoard(pictureBoxSrc);
+            updatePictureBoxFromLogicBoard(pictureBoxDest);
 
-            if(mm.CapturedGamePieceLocation.HasValue)
+            if (mm.CapturedGamePieceLocation.HasValue)
             {
-                Button buttonCaptured = buttonsMatrix[mm.CapturedGamePieceLocation.Value.X, mm.CapturedGamePieceLocation.Value.Y];
-                updateButtonFromLogicBoard(buttonCaptured);
+                PictureBox pictureBoxCaptured = pictureBoxsMatrix[mm.CapturedGamePieceLocation.Value.X, mm.CapturedGamePieceLocation.Value.Y];
+                updatePictureBoxFromLogicBoard(pictureBoxCaptured);
             }
 
-            if(r_Game.CheckIsRoundOver())
+            if (r_Game.CheckIsRoundOver())
             {
                 roundOver();
             }
@@ -145,7 +145,7 @@ namespace WindowsUI
             {
                 highlightCurrentPlayerNameLabel();
 
-                if (r_Game.CurrentPlayerType() == Player.eType.Computer)
+                if (r_Game.CurrentPlayerType() == GameLogic.Player.eType.Computer)
                 {
                     timerToComputerMove.Start();
                 }
@@ -154,20 +154,19 @@ namespace WindowsUI
 
         private void r_Game_InvalidMoveEntered(object sender, EventArgs e)
         {
-            InvalidMoveEnteredEventArgs ime = e as InvalidMoveEnteredEventArgs;
+            GameLogic.InvalidMoveEnteredEventArgs ime = e as GameLogic.InvalidMoveEnteredEventArgs;
             StringBuilder errorMessageSB = new StringBuilder("Invalid Move!");
 
             switch (ime.InvalidReason)
             {
-                case InvalidMoveEnteredEventArgs.eInvalidReason.HasMandatoryMove:
+                case GameLogic.InvalidMoveEnteredEventArgs.eInvalidReason.HasMandatoryMove:
                     errorMessageSB.AppendLine().Append("You have a mandatory move!");
                     break;
-                case InvalidMoveEnteredEventArgs.eInvalidReason.MultipleCapture:
+                case GameLogic.InvalidMoveEnteredEventArgs.eInvalidReason.MultipleCapture:
                     errorMessageSB.AppendLine().Append("You have another cupture!");
                     break;
             }
 
-            unsetButtonSource();
             MessageBox.Show(errorMessageSB.ToString(), this.Text);
         }
 
@@ -177,23 +176,13 @@ namespace WindowsUI
             labelPlayer2Score.Text = r_Game.GetPlayerScore(GameLogic.Player.ePlayerNumber.Player2).ToString();
         }
 
-        //private void updatePlayerScore(GameLogic.Player.ePlayerNumber i_playerNumber)
-        //{
-        //    string playerName = r_Game.GetPlayerName(i_playerNumber);
-        //    int playerScore = r_Game.GetPlayerScore(i_playerNumber);
-        //    Label labelPlayerScore = i_playerNumber == GameLogic.Player.ePlayerNumber.Player1 ? labelPlayer1Name : labelPlayer2Name;
-
-        //    labelPlayerScore.Text = $"{playerName} : {playerScore}";
-        //}
-
         private void highlightCurrentPlayerNameLabel()
         {
             GameLogic.Player.ePlayerNumber currentPlayerNumber = r_Game.GetCurrentPlayerNumber();
 
-            labelPlayer1Name.BackColor = currentPlayerNumber == GameLogic.Player.ePlayerNumber.Player1 ? Color.Wheat : Color.Transparent;
-            labelPlayer2Name.BackColor = currentPlayerNumber == GameLogic.Player.ePlayerNumber.Player1 ? Color.Transparent : Color.Wheat;
-            labelPlayer1Score.BackColor = currentPlayerNumber == GameLogic.Player.ePlayerNumber.Player1 ? Color.Wheat : Color.Transparent;
-            labelPlayer2Score.BackColor = currentPlayerNumber == GameLogic.Player.ePlayerNumber.Player1 ? Color.Transparent : Color.Wheat;
+            labelPlayer1Name.BackColor = labelPlayer1Score.BackColor = currentPlayerNumber == GameLogic.Player.ePlayerNumber.Player1 ? Color.OrangeRed : Color.Transparent;
+            labelPlayer2Name.BackColor = labelPlayer2Score.BackColor = currentPlayerNumber == GameLogic.Player.ePlayerNumber.Player1 ? Color.Transparent : Color.Black;
+            labelPlayer2Name.ForeColor = labelPlayer2Score.ForeColor = currentPlayerNumber == GameLogic.Player.ePlayerNumber.Player1 ? Color.Black : Color.White;
         }
 
         private void timerToComputerMove_Tick(object sender, EventArgs e)
@@ -202,32 +191,52 @@ namespace WindowsUI
             r_Game.MakeComputerMove();
         }
 
-        private void updateButtonFromLogicBoard(Button i_Button)
+        private void updatePictureBoxFromLogicBoard(PictureBox i_PictureBox)
         {
-            string gamePieceSign;
-            GameLogic.Point location = getLocationOnLogicBoard(i_Button.Location);
-            GamePiece.eColor? gamePieceColor = r_Game.GetGamePieceColor(location);
+            Image gamePieceImage;
+            GameLogic.Point location = getLocationOnLogicBoard(i_PictureBox.Location);
+            GameLogic.GamePiece.eColor? gamePieceColor = r_Game.GetGamePieceColor(location);
+            bool isKing;
 
             if (gamePieceColor == null)
             {
-                gamePieceSign = " ";
-            }
-            else if (gamePieceColor == GamePiece.eColor.Black)
-            {
-                gamePieceSign = r_Game.CheckIsGamePieceKing(location) ? "K" : "X";
+                gamePieceImage = null;
             }
             else
             {
-                gamePieceSign = r_Game.CheckIsGamePieceKing(location) ? "U" : "O";
-            }
+                isKing = r_Game.CheckIsGamePieceKing(location);
 
-            i_Button.Text = gamePieceSign;
+                if (gamePieceColor == GameLogic.GamePiece.eColor.Black)
+                {
+                    if (isKing)
+                    {
+                        gamePieceImage = global::WindowsUI.Properties.Resources.GamePiece_Red_King;
+                    }
+                    else
+                    {
+                        gamePieceImage = global::WindowsUI.Properties.Resources.GamePiece_Red;
+                    }
+                }
+                else
+                {
+                    if (isKing)
+                    {
+                        gamePieceImage = global::WindowsUI.Properties.Resources.GamePiece_Black_King;
+                    }
+                    else
+                    {
+                        gamePieceImage = global::WindowsUI.Properties.Resources.GamePiece_Black;
+                    }
+                }
+            }
+            
+            i_PictureBox.Image = gamePieceImage;
         }
 
         private GameLogic.Point getLocationOnLogicBoard(System.Drawing.Point i_Location)
         {
-            int y = (i_Location.Y - k_TopDistance) / k_BoardButtonSize;
-            int x = (i_Location.X - k_FrameDistance) / k_BoardButtonSize;
+            int y = (i_Location.Y - k_TopDistance) / k_BoardPictureBoxSize;
+            int x = (i_Location.X - k_FrameDistance) / k_BoardPictureBoxSize;
 
             return new GameLogic.Point(y, x);
         }
@@ -251,7 +260,7 @@ namespace WindowsUI
 
             if (dialogResult == DialogResult.Yes)
             {
-                unsetButtonSource();
+                unsetPictureBoxSource();
                 r_Game.SetNewRound();
             }
             else

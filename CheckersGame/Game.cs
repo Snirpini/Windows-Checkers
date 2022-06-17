@@ -14,7 +14,7 @@ namespace GameLogic
             Player2Win
         }
 
-        public EventHandler newRoundWasSet;
+        public EventHandler NewRoundWasSet;
         public EventHandler MoveMade;
         public EventHandler InvalidMoveEntered;
         private Board m_GameBoard;
@@ -453,9 +453,9 @@ namespace GameLogic
         {
             EventArgs e = new EventArgs();
 
-            if (newRoundWasSet != null)
+            if (NewRoundWasSet != null)
             {
-                newRoundWasSet(this, e);
+                NewRoundWasSet(this, e);
             }
         }
 
